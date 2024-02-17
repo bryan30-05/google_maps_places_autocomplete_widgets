@@ -136,7 +136,7 @@ result["predictions"] =
       proxy = proxy!.replace(query: 'apiurl=$request');
     }
 
-    print(proxy?.toString());
+    debugPrint(proxy?.toString());
     late Response response;
 
     if (proxy != null) {
