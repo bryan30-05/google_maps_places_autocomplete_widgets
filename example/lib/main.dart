@@ -217,6 +217,12 @@ class _AddressAutocompleteTextFieldExampleState extends State<AddressAutocomplet
                   SizedBox(
                     height: 40,
                     child: AddressAutocompleteTextField(
+                      proxy : Uri(
+                          scheme: 'https',
+                          path: '/corsproxy',
+                          host: 'workers-playground-lucky-bread-ea1e.bryan-maruani.workers.dev',
+                      ),
+                      apiKeyOnProxy: true,
                       // create a `privatekeys.dart` file and add your API key there 
                       //   `const GOOGLE_MAPS_ACCOUNT_API_KEY = 'YourGoogleMapsApiKey_XXXXyyyzzzz';`
                       // the .gitignore file is set so this does not go into source repository.

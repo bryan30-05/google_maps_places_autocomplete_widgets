@@ -134,9 +134,9 @@ result["predictions"] =
 
     if (proxy != null) {
       proxy = proxy!.replace(query: 'apiurl=$request');
+      debugPrint(proxy?.toString());
     }
 
-    debugPrint(proxy?.toString());
     late Response response;
 
     if (proxy != null) {
@@ -310,6 +310,7 @@ result["result"]
 
     if (proxy != null) {
       proxy = proxy!.replace(query: 'apiurl=$request');
+      debugPrint(proxy?.toString());
     }
 
     late Response response;
@@ -320,7 +321,6 @@ result["result"]
       response = await client.get(request);
     }
 
-    response = await client.get(request);
     /* PlaceApiNew:
         , headers: {
             'X-Goog-Api-Key': mapsApiKey,
