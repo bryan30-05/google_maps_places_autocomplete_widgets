@@ -14,11 +14,9 @@ import '/service/address_service.dart';
 export 'package:google_maps_places_autocomplete_widgets/model/place.dart';
 export 'package:google_maps_places_autocomplete_widgets/model/suggestion.dart';
 
-typedef ReportValidationFailureAndRequestFocusCallback = bool Function(
-    String errorMessageForThisFailedValidation);
+typedef ReportValidationFailureAndRequestFocusCallback = bool Function(String errorMessageForThisFailedValidation);
 
-class AddressAutocompleteTextFormField
-    extends AddresssAutocompleteStatefulWidget {
+class AddressAutocompleteTextFormField extends AddresssAutocompleteStatefulWidget {
   /// Callback triggered before sending query to google places API.
   /// This allows the caller to prepare the query, modifying it in any way.  It might be
   /// used for adding things like City, State, Zip that may be already entered in other
@@ -52,6 +50,12 @@ class AddressAutocompleteTextFormField
   ///your maps api key, must not be null
   @override
   final String mapsApiKey;
+
+  @override
+  final Uri? proxy;
+
+  @override
+  final bool apiKeyOnProxy;
 
   ///builder used to render each item displayed
   ///must not be null
@@ -116,8 +120,7 @@ class AddressAutocompleteTextFormField
   /// Key to use for the TextFormField() widget.
   final Key? textFormFieldKey;
 
-  final ReportValidationFailureAndRequestFocusCallback?
-      reportValidationFailAndRequestFocus;
+  final ReportValidationFailureAndRequestFocusCallback? reportValidationFailAndRequestFocus;
 
   // These correspond to arguments supported by standard Flutter TextFormField
   @override
@@ -212,6 +215,8 @@ class AddressAutocompleteTextFormField
   const AddressAutocompleteTextFormField({
     super.key,
     required this.mapsApiKey,
+    this.proxy,
+    this.apiKeyOnProxy = false,
     this.controller,
     this.requiredField = false,
     this.validator = defaultValidator,
@@ -285,14 +290,10 @@ class AddressAutocompleteTextFormField
   });
 
   @override
-  State<StatefulWidget> createState() =>
-      _AddressAutocompleteTextFormFieldState();
+  State<StatefulWidget> createState() => _AddressAutocompleteTextFormFieldState();
 }
 
-class _AddressAutocompleteTextFormFieldState
-    extends State<AddressAutocompleteTextFormField>
-    with SuggestionOverlayMixin
-    implements OverlaySuggestionDetails {
+class _AddressAutocompleteTextFormFieldState extends State<AddressAutocompleteTextFormField> with SuggestionOverlayMixin implements OverlaySuggestionDetails {
   @override
   final LayerLink layerLink = LayerLink();
   @override
@@ -322,8 +323,7 @@ class _AddressAutocompleteTextFormFieldState
     // focus, instead of the last.
     bool focusRequestedAlready = false;
     if (widget.reportValidationFailAndRequestFocus != null) {
-      focusRequestedAlready =
-          widget.reportValidationFailAndRequestFocus!.call(validationErrorMsg);
+      focusRequestedAlready = widget.reportValidationFailAndRequestFocus!.call(validationErrorMsg);
     }
     if (!focusRequestedAlready) {
       focusNode.requestFocus();
@@ -363,9 +363,7 @@ class _AddressAutocompleteTextFormFieldState
             decoration: getInputDecoration(),
 
             key: widget.textFormFieldKey,
-            validator: widget.validator != null
-                ? validatorWithFocusHandlingWrapper
-                : null,
+            validator: widget.validator != null ? validatorWithFocusHandlingWrapper : null,
             onEditingComplete: widget.onEditingComplete,
 
             // passthru args

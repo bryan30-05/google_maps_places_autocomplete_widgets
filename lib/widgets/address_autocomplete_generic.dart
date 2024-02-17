@@ -41,6 +41,9 @@ abstract class AddresssAutocompleteStatefulWidget extends StatefulWidget {
   ///your maps api key, must not be null
   abstract final String mapsApiKey;
 
+  ///your proxy
+  abstract final Uri? proxy;
+
   ///builder used to render each item displayed
   ///must not be null
   abstract final Widget Function(Suggestion, int)? buildItem;
@@ -79,6 +82,8 @@ abstract class AddresssAutocompleteStatefulWidget extends StatefulWidget {
   abstract final int debounceTime;
 
   abstract final TextEditingController? controller;
+
+  abstract final bool? apiKeyOnProxy;
 
   // These correspond to arguments supported by standard Flutter
   // TextField and TextFormField
@@ -127,7 +132,7 @@ mixin SuggestionOverlayMixin<T extends AddresssAutocompleteStatefulWidget>
     focusNode = widget.focusNode ?? FocusNode();
 
     addressService = AddressService(sessionToken, widget.mapsApiKey,
-        widget.componentCountry, widget.language);
+        widget.componentCountry, widget.language, widget.proxy, widget.apiKeyOnProxy ?? false);
 
     focusNode.addListener(showOrHideOverlayOnFocusChange);
   }

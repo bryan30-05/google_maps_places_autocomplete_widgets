@@ -49,6 +49,13 @@ class AddressAutocompleteTextField extends AddresssAutocompleteStatefulWidget {
   @override
   final String mapsApiKey;
 
+  ///your proxy
+  @override
+  final Uri? proxy;
+
+  @override
+  final bool apiKeyOnProxy;
+
   ///builder used to render each item displayed
   ///must not be null
   @override
@@ -190,6 +197,8 @@ class AddressAutocompleteTextField extends AddresssAutocompleteStatefulWidget {
     this.debounceTime = 600,
     this.componentCountry,
     this.language,
+    this.proxy,
+    this.apiKeyOnProxy = false,
 
     // inherited TextField arguments
     this.keyboardType,

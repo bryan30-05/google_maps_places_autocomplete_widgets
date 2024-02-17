@@ -217,11 +217,10 @@ class _AddressAutocompleteTextFieldExampleState extends State<AddressAutocomplet
                   SizedBox(
                     height: 40,
                     child: AddressAutocompleteTextField(
-
                       // create a `privatekeys.dart` file and add your API key there 
                       //   `const GOOGLE_MAPS_ACCOUNT_API_KEY = 'YourGoogleMapsApiKey_XXXXyyyzzzz';`
                       // the .gitignore file is set so this does not go into source repository.
-                      mapsApiKey: GOOGLE_MAPS_ACCOUNT_API_KEY, 
+                      mapsApiKey: GOOGLE_MAPS_ACCOUNT_API_KEY,
 
                       // optional callback arg for use when you do not want `formattedAddress`
                       // to be used to fill the autocomplete textfield when an address is chosen.

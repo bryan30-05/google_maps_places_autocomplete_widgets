@@ -30,12 +30,14 @@ class PlaceApiProvider {
   final client = Client();
 
   PlaceApiProvider(
-      this.sessionToken, this.mapsApiKey, this.compomentCountry, this.language);
+      this.sessionToken, this.mapsApiKey, this.compomentCountry, this.language, this.proxy, this.apiKeyOnProxy);
 
   final String sessionToken;
-  final String mapsApiKey;
+  final String? mapsApiKey;
+  bool apiKeyOnProxy = false;
   final String? compomentCountry;
   final String? language;
+  Uri? proxy;
 
 /* Example JSON returned from Places autocomplete suggestions API request
     (ie.
@@ -110,7 +112,9 @@ result["predictions"] =
           ? 'postal_code'
           : 'address', // this is for looking up fully qualified addresses
       // Could be used for ZIP lookups//   'types': 'postal_code',
-      'key': mapsApiKey,
+      if (!apiKeyOnProxy) ...{
+        'key': mapsApiKey,
+      },
       'sessiontoken': sessionToken
     };
 
@@ -128,7 +132,18 @@ result["predictions"] =
         path: '/maps/api/place/autocomplete/json',
         queryParameters: parameters);
 
-    final response = await client.get(request);
+    if (proxy != null) {
+      proxy = proxy!.replace(query: 'apiurl=$request');
+    }
+
+    print(proxy?.toString());
+    late Response response;
+
+    if (proxy != null) {
+      response = await client.get(proxy!);
+    } else {
+      response = await client.get(request);
+    }
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
@@ -274,7 +289,9 @@ result["result"]
     final Map<String, dynamic> parameters = <String, dynamic>{
       'place_id': placeId,
       'fields': 'name,formatted_address,address_component,geometry',
-      'key': mapsApiKey,
+      if (!apiKeyOnProxy) ...{
+        'key': mapsApiKey,
+      },
       'sessiontoken': sessionToken
     };
     final Uri request = Uri(
@@ -291,7 +308,19 @@ result["result"]
       debugPrint(request.toString());
     }
 
-    final response = await client.get(request);
+    if (proxy != null) {
+      proxy = proxy!.replace(query: 'apiurl=$request');
+    }
+
+    late Response response;
+
+    if (proxy != null) {
+      response = await client.get(proxy!);
+    } else {
+      response = await client.get(request);
+    }
+
+    response = await client.get(request);
     /* PlaceApiNew:
         , headers: {
             'X-Goog-Api-Key': mapsApiKey,
